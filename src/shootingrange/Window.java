@@ -75,8 +75,8 @@ public class Window extends JFrame{
 		backgroundImage_label = new JLabel(new ImageIcon("src\\icons\\800x600.jpg"));
 		this.add(backgroundImage_label);
 		
-		
-		backgroundImage_label.add(new WeaponPanel());
+		WeaponPanel wpanel = new WeaponPanel(this);
+		backgroundImage_label.add(wpanel);
 		
 	
 	}

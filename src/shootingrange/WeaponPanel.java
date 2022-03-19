@@ -16,12 +16,16 @@ import javax.swing.plaf.basic.BasicButtonListener;
 
 import weapons.AssaultRifle;
 import weapons.Gun;
+import weapons.MachineGun;
 import weapons.SniperRifle;
 import weapons.Submachine;
+import java.awt.ActiveEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 
-public class WeaponPanel extends JPanel{
+public class WeaponPanel extends JPanel implements MouseListener{
 	
 	/**
 	 * 
@@ -40,86 +44,54 @@ public class WeaponPanel extends JPanel{
 	
 	
 	ArrayList<Weapon> weapons = new ArrayList<Weapon>();
-	ArrayList<JButton> buttons = new ArrayList<JButton>();
+	ArrayList<MyButton> buttons = new ArrayList<MyButton>();
 	
-	JPanel topPanel, bottomPanel;
+	JPanel leftPanel;
+	MyButton gun_button, submachine_button, assaultRifle_button, sniperRifle_button, machineGun_button;
+	Window superWindow;
 	
-	public WeaponPanel() {
+	public WeaponPanel(Window superWindow) {
 		
 		setLayout(null);
 		setBackground(new Color(0, 0, 0, 100));
 		setSize(PANEL_WIDTH, PANEL_HEIGHT);
 		
-		bottomPanel = new JPanel();
-		bottomPanel.setBounds(0, 200, 50, 200);
-		bottomPanel.setBackground(this.getBackground());
-		this.add(bottomPanel);
+		this.superWindow = superWindow;
 		
-		
+		leftPanel = new JPanel();
+		leftPanel.setBounds(0, 180, 50, 210);
+		leftPanel.setBackground(this.getBackground());
+		this.add(leftPanel);
 		
 		weapons.add(new Gun(823482834534L, "9MM", "SEMI AUTO", 17, 4.49f, "GLOCK"));
 		weapons.add(new Submachine(234283472830L, "28MM", "BLOWBACK", 50, 10.4f, "FN P90"));
 		weapons.add(new AssaultRifle(423916531032L, "39MM", "GAS-OPERATED", 30, 16.3f, "AK 47"));
 		weapons.add(new SniperRifle(793134924742L, "51MM", "BOLT-ACTION", 10, 26.0f, "PRICKSKY"));
+		weapons.add(new MachineGun(923482374821L, "7.8MM", "CRANK HANDLE", 200, 26.5f, "GATLING GUN"));
 		
-		JButton btn_1 = new JButton();
-		btn_1.removeMouseListener(btn_1.getMouseListeners()[0]);
-		btn_1.setActionCommand("GLOCK");
-		btn_1.setLayout(null);
-		btn_1.setFocusable(false);
-		btn_1.setBorderPainted(false);
-		btn_1.setContentAreaFilled(false);
-		btn_1.setIcon(new ImageIcon("src\\icons\\gun_30px.png"));
-		buttons.add(btn_1);
+		gun_button = new MyButton(weapons.get(0));
+		gun_button.addMouseListener(this);
+		buttons.add(gun_button);
 		
-		JButton btn_2 = new JButton();
-		btn_2.removeMouseListener(btn_2.getMouseListeners()[0]);
-		btn_2.setActionCommand("FN P90");
-		btn_2.setLayout(null);
-		btn_2.setFocusable(false);
-		btn_2.setBorderPainted(false);
-		btn_2.setContentAreaFilled(false);
-		btn_2.setIcon(new ImageIcon("src\\icons\\submachine_gun_26px.png"));
-		btn_2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btn_2.setIcon(new ImageIcon("src\\icons\\target_26px_1.png"));
-				
-				WeaponPanel.this.revalidate();
-				WeaponPanel.this.repaint();
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btn_2.setIcon(new ImageIcon("src\\icons\\submachine_gun_26px.png"));
-			
-				revalidate();
-				repaint();
-			}
-		});
+		submachine_button = new MyButton(weapons.get(1));
+		submachine_button.addMouseListener(this);
+		buttons.add(submachine_button);
 		
-		buttons.add(btn_2);
+		assaultRifle_button = new MyButton(weapons.get(2));
+		assaultRifle_button.addMouseListener(this);
+		buttons.add(assaultRifle_button);
 		
-		JButton btn_3 = new JButton();
-		btn_3.removeMouseListener(btn_3.getMouseListeners()[0]);
-		btn_3.setActionCommand("AK 47");
-		btn_3.setLayout(null);
-		btn_3.setFocusable(false);
-		btn_3.setBorderPainted(false);
-		btn_3.setContentAreaFilled(false);
-		btn_3.setIcon(new ImageIcon("src\\icons\\submachine_gun_26px.png"));
-		buttons.add(btn_3);
+		sniperRifle_button = new MyButton(weapons.get(3));
+		sniperRifle_button.addMouseListener(this);
+		buttons.add(sniperRifle_button);
 		
-		JButton btn_4 = new JButton();
-		btn_4.removeMouseListener(btn_4.getMouseListeners()[0]);
-		btn_4.setActionCommand("PRICKSKY");
-		btn_4.setLayout(null);
-		btn_4.setFocusable(false);
-		btn_4.setBorderPainted(false);
-		btn_4.setContentAreaFilled(false);
-		btn_4.setIcon(new ImageIcon("src\\icons\\submachine_gun_26px.png"));
-		buttons.add(btn_4);
+		machineGun_button = new MyButton(weapons.get(4));
+		machineGun_button.addMouseListener(this);
+		buttons.add(machineGun_button);
 		
+		
+		System.out.println(gun_button.getPreferredSize());
+		System.out.println(sniperRifle_button.getPreferredSize());
 		addButton();
 	}
 	
@@ -128,10 +100,50 @@ public class WeaponPanel extends JPanel{
 		
 		for(int i = 0; i < buttons.size(); i++) {
 			
-			bottomPanel.add(buttons.get(i));
+			buttons.get(i).setActionCommand(buttons.get(i).getWeapon().getName());
+			leftPanel.add(buttons.get(i));
 			
 		}
 		
+	}
+
+
+
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+		
+	}
+
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		((MyButton)e.getSource()).setIcon(((MyButton)e.getSource()).getWeapon().getIconTarget());
+		System.out.println("entered");
+		superWindow.repaint();
+	}
+
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		((MyButton)e.getSource()).setIcon(((MyButton)e.getSource()).getWeapon().getIcon());
+		System.out.println("exited");
+		superWindow.repaint();
 	}
 	
 }
