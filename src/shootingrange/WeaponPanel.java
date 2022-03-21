@@ -4,11 +4,16 @@ package shootingrange;
 import java.awt.Color;
 import java.awt.Event;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -47,33 +52,44 @@ public class WeaponPanel extends JPanel implements MouseListener{
 	ArrayList<Weapon> weapons = new ArrayList<Weapon>();
 	ArrayList<MyButton> buttons = new ArrayList<MyButton>();
 	
-	JLabel backgroundImage_label;
+	JLabel selectWeaponBackgroundImage_label, shootingRangeBackgroundImage_label, backButtonCircle_label;
 	JPanel leftPanel;
 	Features rightPanel;
 	MyButton gun_button, submachine_button, assaultRifle_button, sniperRifle_button, machineGun_button;
+	JButton back_button, weapon_button;
 	Window superWindow;
 	
 	
 	public WeaponPanel(Window superWindow) {
 		
 		setLayout(null);
-		this.setBackground(Color.red);
+		//this.setBackground(Color.red);
 		setSize(PANEL_WIDTH, PANEL_HEIGHT);
-		
-		
-		backgroundImage_label = new JLabel(new ImageIcon("src\\icons\\800x600.jpg"));
-		backgroundImage_label.setBounds(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
-		this.add(backgroundImage_label);
-		
 		this.superWindow = superWindow;
+		
+		selectWeapon();
+		
+		
+	}
+	
+	
+	public void selectWeapon() {
+		
+		this.removeAll();
+		
+		selectWeaponBackgroundImage_label = new JLabel(new ImageIcon("src\\icons\\800x600.jpg"));
+		selectWeaponBackgroundImage_label.setBounds(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
+		this.add(selectWeaponBackgroundImage_label);
+		
+		
 		
 		leftPanel = new JPanel();
 		leftPanel.setBounds(0, 180, 50, 210);
 		leftPanel.setBackground(new Color(0, 0, 0, 150));
-		backgroundImage_label.add(leftPanel);
+		selectWeaponBackgroundImage_label.add(leftPanel);
 		
 		rightPanel = new Features();
-		backgroundImage_label.add(rightPanel);
+		selectWeaponBackgroundImage_label.add(rightPanel);
 		
 		
 		weapons.add(new Gun(823482834534L, "9MM", "SEMI AUTO", 17, 4.49f, "GLOCK"));
@@ -103,9 +119,12 @@ public class WeaponPanel extends JPanel implements MouseListener{
 		buttons.add(machineGun_button);
 		
 		
-		System.out.println(gun_button.getPreferredSize());
-		System.out.println(sniperRifle_button.getPreferredSize());
 		addButton();
+		
+		revalidate();
+		repaint();
+		
+		
 	}
 	
 	
@@ -120,12 +139,104 @@ public class WeaponPanel extends JPanel implements MouseListener{
 		
 	}
 
+	
+	public void shootingRange(Weapon weapon) {
+		
+		this.removeAll();
+		
+		shootingRangeBackgroundImage_label = new JLabel();
+		shootingRangeBackgroundImage_label.setBounds(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
+		BufferedImage img = null;
+		try {
+		    img = ImageIO.read(new File("src\\icons\\shootingRange_background_2.jpg"));
+		} catch (IOException e) {
+		}
+		shootingRangeBackgroundImage_label.setIcon(new ImageIcon(img.getScaledInstance(PANEL_WIDTH, PANEL_HEIGHT, Image.SCALE_DEFAULT)));
+		this.add(shootingRangeBackgroundImage_label);
+		
+		backButtonCircle_label = new JLabel();
+		backButtonCircle_label.setBounds(15, 545, 40, 40);
+		backButtonCircle_label.setIcon(new ImageIcon("src\\icons\\circle_40px.png"));
+		backButtonCircle_label.setVisible(false);
+		shootingRangeBackgroundImage_label.add(backButtonCircle_label);
+		
+		back_button = new JButton();
+		back_button.setBounds(20, 550, 30, 30);
+		back_button.setFocusable(false);
+		back_button.setContentAreaFilled(false);
+		back_button.setBorderPainted(false);
+		back_button.setIcon(new ImageIcon("src\\icons\\Close_30px.png"));
+		back_button.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent event) {
+				selectWeapon();
+			}
+			
+		});
+		back_button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				backButtonCircle_label.setVisible(true);
+			}
+			
+			public void mouseExited(MouseEvent e) {
+				backButtonCircle_label.setVisible(false);
+			}
+		});
+		
+		shootingRangeBackgroundImage_label.add(back_button);
+		
+		weapon_button = new JButton();
+		weapon_button.setBounds(250, 200, 300, 200);
+		weapon_button.setFocusable(false);
+		weapon_button.setContentAreaFilled(false);
+		weapon_button.setBorderPainted(false);
+		weapon_button.setIcon(weapon.getShootingIcon());
+		weapon_button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				/*weapon_button.setIcon(weapon.getShootingActionIcon());
+				weapon_button.revalidate();
+				weapon_button.repaint();
+				
+				
+				superWindow.revalidate();
+				superWindow.repaint();
+				
+				System.out.println("ActiopnPerformed - 1");
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				System.out.println("ActiopnPerformed - 2");
+				
+				weapon_button.setIcon(weapon.getShootingIcon());
+				
+				superWindow.revalidate();
+				superWindow.repaint();
+				*/
+			}
+		});
+		shootingRangeBackgroundImage_label.add(weapon_button);
+		
+		
+	
+		
+	}
 
 
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
+		
+		this.mouseExited(e);
+		shootingRange(((MyButton)e.getSource()).getWeapon());
+		revalidate();
+		repaint();
+		
 		
 	}
 
