@@ -48,7 +48,6 @@ public class Window extends JFrame{
 	 */
 	public static Insets INSETS;
 	
-	JLabel backgroundImage_label;
 	WeaponPanel weaponPanel;
 	
 	public Window() {
@@ -71,12 +70,8 @@ public class Window extends JFrame{
 	
 	private void GUI() {
 		
-		
-		backgroundImage_label = new JLabel(new ImageIcon("src\\icons\\800x600.jpg"));
-		this.add(backgroundImage_label);
-		
 		WeaponPanel wpanel = new WeaponPanel(this);
-		backgroundImage_label.add(wpanel);
+		this.add(wpanel);
 		
 	
 	}

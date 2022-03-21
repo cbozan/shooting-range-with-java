@@ -40,23 +40,23 @@ public class Weapon {
 		return iconTarget;
 	}
 
-	public long getUPC() {
+	public long getUpc() {
 		return UPC;
 	}
 
-	public String getCALIBER() {
+	public String getCaliber() {
 		return CALIBER;
 	}
 
-	public String getACTION() {
+	public String getAction() {
 		return ACTION;
 	}
 
-	public int getCAPACITY() {
+	public int getCapacity() {
 		return CAPACITY;
 	}
 
-	public float getBARREL_LENGTH() {
+	public float getBarrelLength() {
 		return BARREL_LENGTH;
 	}
 
