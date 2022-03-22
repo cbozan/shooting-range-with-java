@@ -12,6 +12,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -195,29 +197,49 @@ public class WeaponPanel extends JPanel implements MouseListener{
 		weapon_button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("ActionPerformed");
+				((JButton)e.getSource()).setIcon(weapon.getShootingActionIcon());
 				
-				/*weapon_button.setIcon(weapon.getShootingActionIcon());
-				weapon_button.revalidate();
-				weapon_button.repaint();
+				Timer timer = new Timer();
+				TimerTask task = new TimerTask() {
+					
+					@Override
+					public void run() {
+						((JButton)e.getSource()).setIcon(weapon.getShootingIcon());
+						timer.cancel();
+						
+					}
+				};
 				
+				timer.schedule(task, 150);
+
 				
-				superWindow.revalidate();
-				superWindow.repaint();
+//				try {
+//					Thread.sleep(1000);
+//				} catch (InterruptedException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+				//((JButton)e.getSource()).setEnabled(false);
+				//weapon_button.setIcon(weapon.getShootingActionIcon());
+//				weapon_button.setIcon(weapon.getShootingActionIcon());
+//				weapon_button.revalidate();
+//				weapon_button.repaint();
+//				
+//				
+//				superWindow.revalidate();
+//				superWindow.repaint();
+//				
+//				System.out.println("ActiopnPerformed - 1");
+//				
+//				System.out.println("ActiopnPerformed - 2");
+//				
+//				weapon_button.setIcon(weapon.getShootingIcon());
+//				
+//				superWindow.revalidate();
+//				superWindow.repaint();
+
 				
-				System.out.println("ActiopnPerformed - 1");
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				System.out.println("ActiopnPerformed - 2");
-				
-				weapon_button.setIcon(weapon.getShootingIcon());
-				
-				superWindow.revalidate();
-				superWindow.repaint();
-				*/
 			}
 		});
 		shootingRangeBackgroundImage_label.add(weapon_button);
