@@ -1,4 +1,5 @@
 package shootingrange;
+import java.awt.Color;
 import java.awt.Insets;
 
 import javax.swing.ImageIcon;
@@ -56,6 +57,7 @@ public class Window extends JFrame{
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setIconImage((new ImageIcon("src\\icons\\target_26px_1.png")).getImage());
 		setVisible(true);
 		
 		INSETS = this.getInsets();
